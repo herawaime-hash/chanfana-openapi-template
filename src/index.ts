@@ -1,6 +1,12 @@
 import { ApiException, fromHono } from "chanfana";
 import { Hono } from "hono";
 import { tasksRouter } from "./endpoints/tasks/router";
+import { toolsRouter } from "./endpoints/tools/router";
+import { skillsRouter } from "./endpoints/skills/router";
+import { workflowsRouter } from "./endpoints/workflows/router";
+import { strixRouter } from "./endpoints/strix/router";
+import { DashboardEndpoint } from "./endpoints/dashboard";
+import { LlmInvokeEndpoint } from "./endpoints/llmInvoke";
 import { ContentfulStatusCode } from "hono/utils/http-status";
 import { DummyEndpoint } from "./endpoints/dummyEndpoint";
 
@@ -40,10 +46,16 @@ const openapi = fromHono(app, {
 	},
 });
 
-// Register Tasks Sub router
+// Register sub routers
 openapi.route("/tasks", tasksRouter);
+openapi.route("/tools", toolsRouter);
+openapi.route("/skills", skillsRouter);
+openapi.route("/workflows", workflowsRouter);
+openapi.route("/strix", strixRouter);
 
 // Register other endpoints
+openapi.get("/dashboard", DashboardEndpoint);
+openapi.post("/llm-invoke", LlmInvokeEndpoint);
 openapi.post("/dummy/:slug", DummyEndpoint);
 
 // Export the Hono app
