@@ -70,3 +70,33 @@ Test files are located in the `tests/` directory, with examples demonstrating ho
 2. Each endpoint has its own file in `src/endpoints/`.
 3. Integration tests are located in the `tests/` directory.
 4. For more information read the [chanfana documentation](https://chanfana.com/), [Hono documentation](https://hono.dev/docs), and [Vitest documentation](https://vitest.dev/guide/).
+
+## Unified AI & Cybersecurity Dashboard
+
+This Worker now exposes a unified system-of-record for AI agents, LLMs, and cybersecurity tools, plus workflows, skills, and a Strict STRIX integration.
+
+### Endpoints
+
+- `GET /dashboard` — grouped tools, skills, workflows, recent STRIX runs, and licenses
+- `POST /llm-invoke` — route an intent to the best tool/skill/workflow
+- `/tools` — CRUD for tools
+- `/tools/:toolId/licenses` — attach licenses/certifications to tools
+- `/skills` — CRUD for reusable capabilities
+- `/workflows` — CRUD for ordered skill/tool executions
+- `/workflows/:id/execute` — run a workflow
+- `/strix/info` — Strict STRIX metadata and install notes
+- `/strix/scenarios` — list scenario templates
+- `/strix/scenarios` — create a STRIX run
+- `/strix/scenarios/:id/purple` — add purple-team/investigation layer
+- `/strix/scenarios/:id/invoke` — invoke another tool with STRIX context
+
+### Seed data
+
+Migration `0003_seed_tools.sql` seeds the database with your AI agents, LLMs, hardware, messaging bridges, and STRIX metadata.
+
+### Next steps to wire up live integrations
+
+1. Deploy Strict STRIX on your VPS/lab from `https://github.com/stride-oss/strix`.
+2. Add the `STRIX_BASE_URL` secret or binding in `wrangler.jsonc`.
+3. Set each tool's `api_endpoint` and `integration_status` in the database.
+4. Add real HTTP calls in `/strix/scenarios`, `/llm-invoke`, and `/workflows/:id/execute` for the agents you want to orchestrate.
